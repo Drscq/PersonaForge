@@ -60,6 +60,8 @@ The notebook skeleton is in
 [`notebooks/personaforge_colab_train.ipynb`](notebooks/personaforge_colab_train.ipynb).
 The training script is in
 [`src/personaforge/training/train_qlora.py`](src/personaforge/training/train_qlora.py).
+After training, `personaforge.training.evaluate_winrate` can export
+adapter-vs-base JudgeCal-compatible evaluation pairs.
 
 ## Integrity Boundary
 
@@ -68,4 +70,3 @@ claim, after a Colab run succeeds, is:
 
 > QLoRA SFT + DPO on a 0.5B-1B open LLM using synthetic interactions calibrated
 > to population-level behavioral signatures.
-

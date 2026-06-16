@@ -30,13 +30,19 @@ def calibrate_personas(
 ) -> tuple[list[Persona], list[CalibrationStep], list[Interaction]]:
     current = normalize_persona_weights(personas)
     curve: list[CalibrationStep] = []
-    final_interactions: list[Interaction] = []
+    best_interactions: list[Interaction] = []
+    best_personas = current
+    best_divergence = float("inf")
 
     for round_index in range(rounds):
         simulator = TemplateUserSimulator(seed=seed + round_index)
         interactions = simulator.generate(current, samples_per_round)
         sim_distribution = distribution_from_interactions(interactions)
         divergence = js_divergence(real_distribution, sim_distribution)
+        if divergence < best_divergence:
+            best_divergence = divergence
+            best_interactions = interactions
+            best_personas = current
         curve.append(
             CalibrationStep(
                 round_index=round_index,
@@ -45,10 +51,9 @@ def calibrate_personas(
                 weights={persona.persona_id: persona.weight for persona in current},
             )
         )
-        final_interactions = interactions
         current = update_weights(current, real_distribution, sim_distribution, learning_rate)
 
-    return current, curve, final_interactions
+    return best_personas, curve, best_interactions
 
 
 def update_weights(
@@ -66,4 +71,3 @@ def update_weights(
         new_weight = persona.weight * ((1.0 - learning_rate) + learning_rate * correction)
         updated.append(Persona(persona.persona_id, persona.signature, new_weight, persona.style))
     return normalize_persona_weights(updated)
-

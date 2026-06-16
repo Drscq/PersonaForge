@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from personaforge.divergence import js_divergence
+
 
 def render_report(
     *,
@@ -15,7 +17,7 @@ def render_report(
     out_path = Path(out_dir)
     best = min((step["js_divergence"] for step in calibration_curve), default=0.0)
     first = calibration_curve[0]["js_divergence"] if calibration_curve else 0.0
-    last = calibration_curve[-1]["js_divergence"] if calibration_curve else 0.0
+    selected = js_divergence(real_distribution, synthetic_distribution)
 
     lines = [
         "# PersonaForge Demo Report",
@@ -25,7 +27,7 @@ def render_report(
         f"- Real user-log turns: {n_real_logs}",
         f"- Synthetic interactions: {n_interactions}",
         f"- Initial JS divergence: {first:.4f}",
-        f"- Final JS divergence: {last:.4f}",
+        f"- Selected JS divergence: {selected:.4f}",
         f"- Best JS divergence: {best:.4f}",
         "",
         "## Calibration Curve",
@@ -48,4 +50,3 @@ def render_report(
 
     lines.append("")
     (out_path / "report.md").write_text("\n".join(lines), encoding="utf-8")
-
