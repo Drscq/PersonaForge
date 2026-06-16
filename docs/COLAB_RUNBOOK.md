@@ -56,6 +56,59 @@ This writes `outputs/winrate/adapter_vs_base_pairs.jsonl`, which can be judged
 with JudgeCal or an API judge. The built-in win-rate number is only a smoke-test
 heuristic.
 
+## JudgeCal/API Win-Rate
+
+Use this after `outputs/winrate/adapter_vs_base_pairs.jsonl` exists. This step
+requires an OpenAI-compatible judge API key, such as NVIDIA NIM or Groq.
+
+Install JudgeCal in the same Colab runtime:
+
+```bash
+python -m pip install "git+https://github.com/Drscq/JudgeCal.git"
+```
+
+If the JudgeCal repository has not been renamed yet, install from its current
+GitHub URL instead.
+
+Configure an API judge. Example for NVIDIA NIM:
+
+```bash
+export JUDGECAL_NIM_BASE_URL="https://integrate.api.nvidia.com/v1"
+export JUDGECAL_NIM_API_KEY="YOUR_NIM_KEY"
+export JUDGECAL_NIM_MODEL="YOUR_NIM_MODEL"
+```
+
+Run the judge:
+
+```bash
+mkdir -p outputs/judgecal
+
+judgecal run-api \
+  --provider NIM \
+  --data outputs/winrate/adapter_vs_base_pairs.jsonl \
+  --out outputs/judgecal/nim_predictions.jsonl
+```
+
+Summarize adapter win-rate. In these pairs, `model_a` is the PersonaForge
+adapter and `model_b` is the base model:
+
+```bash
+python -m personaforge.evaluation.summarize_judgecal \
+  --predictions outputs/judgecal/nim_predictions.jsonl \
+  --out outputs/judgecal/nim_winrate.json
+
+cat outputs/judgecal/nim_winrate.json
+```
+
+Optionally also generate the standard JudgeCal report:
+
+```bash
+judgecal report \
+  --data outputs/winrate/adapter_vs_base_pairs.jsonl \
+  --predictions nim=outputs/judgecal/nim_predictions.jsonl \
+  --out outputs/judgecal/report
+```
+
 ## When to Send Logs Back
 
 Send the logs if:

@@ -72,6 +72,8 @@ The training script is in
 [`src/personaforge/training/train_qlora.py`](src/personaforge/training/train_qlora.py).
 After training, `personaforge.training.evaluate_winrate` can export
 adapter-vs-base JudgeCal-compatible evaluation pairs.
+Then `personaforge.evaluation.summarize_judgecal` summarizes API/JudgeCal
+predictions into adapter-vs-base win-rate.
 
 ## Integrity Boundary
 
