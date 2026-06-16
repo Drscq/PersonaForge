@@ -1,6 +1,7 @@
 from personaforge.harvest import interactions_to_dpo, interactions_to_judgecal_pairs, interactions_to_sft
 from personaforge.schema import Interaction, Signature
 from personaforge.training.dataset_format import load_dpo_rows, load_sft_rows
+from personaforge.training.train_qlora import validate_data_paths
 from personaforge.io import write_jsonl
 
 
@@ -42,3 +43,16 @@ def test_training_dataset_format_loaders(tmp_path):
     assert load_sft_rows(str(sft_path))[0]["messages"][1]["role"] == "assistant"
     assert load_dpo_rows(str(dpo_path))[0]["prompt"][0]["role"] == "user"
 
+
+def test_train_config_fails_fast_when_data_missing(tmp_path):
+    missing_sft = tmp_path / "missing_sft.jsonl"
+    missing_dpo = tmp_path / "missing_dpo.jsonl"
+    config = {"sft_data": str(missing_sft), "dpo_data": str(missing_dpo)}
+    try:
+        validate_data_paths(config, "both")
+    except FileNotFoundError as exc:
+        message = str(exc)
+        assert "Training data is missing" in message
+        assert "personaforge demo --out runs/full_t4" in message
+    else:
+        raise AssertionError("Expected FileNotFoundError")

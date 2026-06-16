@@ -51,6 +51,10 @@ sed -n '1,120p' runs/full_t4/report.md
 
 Expected: each JSONL file has 2048 rows.
 
+Do not start training until `runs/full_t4/sft.jsonl` and
+`runs/full_t4/dpo.jsonl` both exist. If they are missing, rerun this data
+generation step first.
+
 ## 3. Train SFT + DPO
 
 ```bash
@@ -152,4 +156,3 @@ synthetic interactions and evaluates more pairs. However, if outputs are still
 repetitive or template-like, the next bottleneck is data generation quality, not
 GPU time. The next upgrade should replace template-generated responses with API
 generated responses and JudgeCal filtering before DPO.
-

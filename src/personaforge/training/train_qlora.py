@@ -16,6 +16,7 @@ def main(argv: list[str] | None = None) -> int:
     config = load_config(args.config)
     config.update({key: value for key, value in vars(args).items() if value is not None})
     stage = config["stage"]
+    validate_data_paths(config, stage)
 
     if stage in {"sft", "both"}:
         run_sft(config)
@@ -46,6 +47,26 @@ def load_config(path: str) -> dict[str, Any]:
     config.setdefault("stage", "both")
     config.setdefault("load_in_4bit", True)
     return config
+
+
+def validate_data_paths(config: dict[str, Any], stage: str) -> None:
+    required = []
+    if stage in {"sft", "both"}:
+        required.append(("SFT", Path(config["sft_data"])))
+    if stage in {"dpo", "both"}:
+        required.append(("DPO", Path(config["dpo_data"])))
+
+    missing = [(name, path) for name, path in required if not path.exists()]
+    if not missing:
+        return
+
+    details = "\n".join(f"- {name} data not found: {path}" for name, path in missing)
+    raise FileNotFoundError(
+        "Training data is missing. Generate it before starting QLoRA training.\n"
+        f"{details}\n\n"
+        "For the full T4 run, use:\n"
+        "personaforge demo --out runs/full_t4 --rounds 8 --samples-per-round 2048 --seed 42"
+    )
 
 
 def run_sft(config: dict[str, Any]) -> None:
