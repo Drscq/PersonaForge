@@ -44,6 +44,16 @@ Expected artifacts:
 
 See [`examples/demo_report.md`](examples/demo_report.md) for the report shape.
 
+## Colab Smoke Result
+
+A first Colab T4 smoke run completed QLoRA SFT + DPO and exported
+adapter-vs-base JudgeCal pairs. See
+[`experiments/2026-06-16-colab-smoke`](experiments/2026-06-16-colab-smoke).
+
+The run proves the training and evaluation path works, but the qualitative
+sample also shows repetitive adapter output from the tiny 64-example dataset.
+Treat it as a pipeline proof, not a final model-quality result.
+
 ## When Colab Is Needed
 
 Use Colab only after the local demo has generated non-empty `sft.jsonl` and
