@@ -1,0 +1,19 @@
+{
+  "model_name": "Qwen/Qwen2.5-0.5B-Instruct",
+  "sft_data": "runs/full_t4/sft.jsonl",
+  "dpo_data": "runs/full_t4/dpo.jsonl",
+  "sft_output_dir": "adapters/full_t4/qwen2_5_0_5b_sft",
+  "dpo_output_dir": "adapters/full_t4/qwen2_5_0_5b_dpo",
+  "max_length": 768,
+  "per_device_train_batch_size": 1,
+  "gradient_accumulation_steps": 8,
+  "learning_rate": 0.0001,
+  "num_train_epochs": 1,
+  "max_steps": 300,
+  "logging_steps": 10,
+  "save_steps": 100,
+  "lora_r": 16,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05
+}
+

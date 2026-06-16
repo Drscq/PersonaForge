@@ -77,6 +77,9 @@ The notebook skeleton is in
 [`notebooks/personaforge_colab_train.ipynb`](notebooks/personaforge_colab_train.ipynb).
 The training script is in
 [`src/personaforge/training/train_qlora.py`](src/personaforge/training/train_qlora.py).
+For a larger single-T4 run, use
+[`docs/FULL_EXPERIMENT_COLAB.md`](docs/FULL_EXPERIMENT_COLAB.md) with
+[`configs/colab_qwen_0_5b_full_t4.json`](configs/colab_qwen_0_5b_full_t4.json).
 After training, `personaforge.training.evaluate_winrate` can export
 adapter-vs-base JudgeCal-compatible evaluation pairs.
 Then `personaforge.evaluation.summarize_judgecal` summarizes API/JudgeCal
