@@ -10,6 +10,10 @@ Runtime:
 - High-RAM runtime
 - Model: `Qwen/Qwen2.5-0.5B-Instruct`
 
+Notebook:
+
+- [`PersonaForge_Colab_T4_QLoRA_SFT_DPO_Smoke_Run.ipynb`](https://colab.research.google.com/drive/1yQV9NBJftH6P3Mgd26ffNV73lxxkAmJC?usp=sharing)
+
 ## Goal
 
 Verify that PersonaForge can complete the full training path on a single Colab
@@ -72,15 +76,16 @@ Smoke-test summary:
 
 ```json
 {
-  "adapter_win_rate_heuristic": 0.5625,
+  "adapter_win_rate_heuristic": 0.5,
   "judgecal_pairs": "outputs/winrate/adapter_vs_base_pairs.jsonl",
   "n": 16,
-  "tie_rate_heuristic": 0.1875
+  "tie_rate_heuristic": 0.0625
 }
 ```
 
 This number is only a length-based smoke-test heuristic. It is not a final
-model-quality claim.
+model-quality claim. It can vary across reruns because response generation uses
+sampling.
 
 ## Qualitative Finding
 
@@ -100,4 +105,3 @@ evidence of strong model quality.
 - Filter preference pairs with JudgeCal before DPO.
 - Run JudgeCal/API-judge evaluation on `adapter_vs_base_pairs.jsonl`.
 - Add calibrated-vs-uncalibrated ablation.
-

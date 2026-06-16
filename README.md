@@ -50,6 +50,13 @@ A first Colab T4 smoke run completed QLoRA SFT + DPO and exported
 adapter-vs-base JudgeCal pairs. See
 [`experiments/2026-06-16-colab-smoke`](experiments/2026-06-16-colab-smoke).
 
+Reproduction notebook:
+[`PersonaForge_Colab_T4_QLoRA_SFT_DPO_Smoke_Run.ipynb`](https://colab.research.google.com/drive/1yQV9NBJftH6P3Mgd26ffNV73lxxkAmJC?usp=sharing)
+
+Observed artifacts include SFT/DPO LoRA adapters, synthetic SFT/DPO JSONL data,
+and `outputs/winrate/adapter_vs_base_pairs.jsonl` for JudgeCal/API evaluation.
+One T4 smoke check produced a 16-pair heuristic adapter win-rate of `0.50`.
+
 The run proves the training and evaluation path works, but the qualitative
 sample also shows repetitive adapter output from the tiny 64-example dataset.
 Treat it as a pipeline proof, not a final model-quality result.

@@ -1,7 +1,6 @@
 {
-  "adapter_win_rate_heuristic": 0.5625,
+  "adapter_win_rate_heuristic": 0.5,
   "judgecal_pairs": "outputs/winrate/adapter_vs_base_pairs.jsonl",
   "n": 16,
-  "tie_rate_heuristic": 0.1875
+  "tie_rate_heuristic": 0.0625
 }
-
